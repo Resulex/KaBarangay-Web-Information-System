@@ -121,7 +121,7 @@ function renderDetails(doc) {
         <p class="request__update-text">
           ${
             doc.timeline.find((t) => t.status === "In Progress")?.step ||
-            "No active updates at the moment."
+            "Status details available in timeline below."
           }
         </p>
       </section>

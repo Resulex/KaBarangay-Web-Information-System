@@ -1,6 +1,6 @@
 export const protectPage = () => {
-  checkSessionTimeout();
-  if (sessionStorage.getItem("isLoggedIn") !== "true") {
+  // checkSessionTimeout();
+  if (!sessionStorage.getItem("token")) {
     alert("Access denied! Please log in first.");
     window.location.href = "index.html";
     return false; // Stop further execution

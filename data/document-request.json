@@ -19,11 +19,6 @@
           "status": "Completed"
         },
         {
-          "step": "Initial Review",
-          "date": "2025-09-09",
-          "status": "Completed"
-        },
-        {
           "step": "Document Verification",
           "date": null,
           "status": "In Progress"
@@ -59,11 +54,6 @@
           "status": "Completed"
         },
         {
-          "step": "Initial Review",
-          "date": "2025-09-02",
-          "status": "Completed"
-        },
-        {
           "step": "Document Verification",
           "date": "2025-09-03",
           "status": "Completed"
@@ -95,11 +85,6 @@
       "timeline": [
         {
           "step": "Request Submitted",
-          "date": null,
-          "status": "Pending"
-        },
-        {
-          "step": "Initial Review",
           "date": null,
           "status": "Pending"
         },

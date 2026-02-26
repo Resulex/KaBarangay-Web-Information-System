@@ -1,5 +1,6 @@
 import express from 'express';
 import * as crud from './crud.js';
+import { authenticateToken } from '../middleware/authenticate.js';
 
 const router = express.Router();
 

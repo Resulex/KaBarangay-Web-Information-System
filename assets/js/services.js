@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Build timeline steps
     const timeline = [
       { step: "Request Submitted", date: dateRequested, status: "Completed" },
-      { step: "Initial Review", date: null, status: "Pending" }
+      
     ];
 
     // New request object
