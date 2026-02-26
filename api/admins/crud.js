@@ -1,11 +1,15 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
-const uri = "mongodb+srv://dev-user1:NsDXtHtpEsAGNUcd@kabarangay-system-db.qkeqxvv.mongodb.net/?appName=Kabarangay-system-db";
+dotenv.config();
+
+const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri);
-const DB_NAME = "Kabarangay-system-db";
-const COLLECTION_NAME = "admins";
+const DB_NAME = process.env.DB_NAME;
+const COLLECTION_NAME = process.env.USER_COLLECTION;
 
 
 
@@ -21,7 +25,15 @@ export async function loginAdmin(username, password) {
       const isMatch = await bcrypt.compare(password, admin.password_hash);
       if (isMatch) {
         console.log("Login successful for username:", username);
-        return { success: true, admin: admin };
+        
+        // Generate JWT token
+        const token = jwt.sign(
+          { id: admin._id, email: admin.email, username: admin.username },
+          process.env.JWT_SECRET,
+          { expiresIn: '24h' }
+        );
+        
+        return { success: true, token: token, admin: { id: admin._id, email: admin.email, username: admin.username } };
       } else {
         console.log("Login failed for username not matched:", username);
         return { success: false, message: "Invalid username or password" };
@@ -35,6 +47,8 @@ export async function loginAdmin(username, password) {
     throw err;
   }
 }
+
+
 export async function getAdminByUsername(username) {
   const database = client.db(DB_NAME);
   const collection = database.collection(COLLECTION_NAME);
@@ -52,4 +66,10 @@ export async function getAdminByUsername(username) {
     console.error("Error retrieving administrator:", err);
     throw err;
   }
+}
+
+export async function findAdminByEmail(email) {
+  const database = client.db(DB_NAME);
+  const collection = database.collection(COLLECTION_NAME);
+  return await collection.findOne({ email: email });
 }

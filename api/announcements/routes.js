@@ -1,5 +1,10 @@
 import express from 'express';
 import * as crud from './crud.js';
+import { authenticateToken } from '../middleware/authenticate.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -7,7 +12,22 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     console.log("Received request for announcements with headers:", req.headers);
-    const isAdmin = !!req.headers["x-admin"];
+    console.log("Authenticated user:", req.user, !!req.user); // Log authenticated user info (if any)
+     const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    let isAdmin = false;
+    console.log("Token found in headers:", token); // Log whether token is present
+    if (token) {
+      try {
+        // Attempt to verify token without requiring it
+        jwt.verify(token, process.env.JWT_SECRET);
+        isAdmin = true;
+      } catch (err) {
+        isAdmin = false;
+        console.log("Token verification failed, treating as non-admin:", err.message); // Log token verification failure
+      }
+    }
     const filter = isAdmin ? {} : { is_hidden: false };
     const data = await crud.getAllAnnouncements(filter);
     res.json(data);
@@ -17,7 +37,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST New
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const result = await crud.createAnnouncement(req.body);
     res.status(201).json(result);
@@ -27,7 +47,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT Update
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const result = await crud.updateAnnouncement(req.params.id, req.body);
     res.json(result);
@@ -37,7 +57,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // PATCH hidden
-router.patch('/:id/toggle-hidden', async (req, res) => {
+router.patch('/:id/toggle-hidden', authenticateToken, async (req, res) => {
   try {
     const result = await crud.toggleHidden(req.params.id, req.body);
     res.json(result);

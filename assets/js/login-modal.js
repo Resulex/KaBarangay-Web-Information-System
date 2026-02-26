@@ -25,7 +25,6 @@ export const initLoginModal = () => {
   }
 
   // --- Open Modal ---
-  // Triggered when the "Staff Login" button is clicked
   openModalBtn.addEventListener("click", () => {
     console.log("Opening login modal...");
     loginModal.classList.add("show");
@@ -33,7 +32,6 @@ export const initLoginModal = () => {
   });
 
   // --- Close Modal ---
-  // Closes modal when clicking the close button or overlay
   const closeElements = [closeModalBtn, overlay].filter(Boolean);
   closeElements.forEach((el) => {
     el.addEventListener("click", () => {
@@ -44,7 +42,6 @@ export const initLoginModal = () => {
   });
 
   // --- Login Form Validation ---
-  // Basic hardcoded validation for demo purposes
   if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -54,40 +51,40 @@ export const initLoginModal = () => {
       const password = document.getElementById("modalPassword").value.trim();
 
       // --- Authentication Logic through API ---
-    // POST login API call
-    fetch(`http://localhost:3000/api/admins/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+      // POST login API call
+      fetch(`http://localhost:3000/api/admins/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
       })
-      .then((data) => {
-        console.log(data)
-        if (data.success) {
-          // SUCCESS: Save login session and redirect to dashboard
-          sessionStorage.setItem("loginTime", new Date().toISOString());
-          sessionStorage.setItem("isLoggedIn", "true");
-          window.location.href = "admin-dashboard.html";
-        } else {
-          // FAILURE: Show alert and inline error message
-          alert("Invalid username or password.");
-          if (errorMsg) {
-            errorMsg.textContent = "Invalid username or password.";
-            errorMsg.style.display = "block";
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
           }
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login fetch:", error);
-        alert("An error occurred during login. Please try again later.");
-      });
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            // SUCCESS: Save token in session
+            
+            sessionStorage.setItem("token", data.token); // Store token in session storage
+            window.location.href = "admin-dashboard.html"; // Redirect to dashboard
+          } else {
+            // FAILURE: Show alert and inline error message
+            alert("Invalid username or password.");
+            if (errorMsg) {
+              errorMsg.textContent = "Invalid username or password.";
+              errorMsg.style.display = "block";
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error during login fetch:", error);
+          alert("An error occurred during login. Please try again later.");
+        });
     });
   }
 

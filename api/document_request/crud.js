@@ -1,10 +1,13 @@
 import { MongoClient, ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const uri = "mongodb+srv://dev-user1:NsDXtHtpEsAGNUcd@kabarangay-system-db.qkeqxvv.mongodb.net/?appName=Kabarangay-system-db";
 
 const client = new MongoClient(uri);
-const DB_NAME = "Kabarangay-system-db";
-const COLLECTION_NAME = "document_requests";
+const DB_NAME = process.env.DB_NAME;
+const COLLECTION_NAME = process.env.DOCUMENT_REQUEST_COLLECTION;
 
 // CREATE - Insert a new document request
 export async function createDocumentRequest(documentRequestData) {

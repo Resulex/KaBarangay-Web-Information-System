@@ -103,9 +103,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       try {
+        const token = sessionStorage.getItem("token"); // Retrieve token from session storage
+
         // EDIT MODE: Update existing announcement via API
         if (isEditMode && currentEditId !== null) {
-          // Find existing announcement to retain hidden status
           const existing = announcementsData.find(
             (ann) => ann._id === currentEditId
           );
@@ -114,34 +115,35 @@ document.addEventListener("DOMContentLoaded", async () => {
           const response = await fetch(`${API_URL}/${currentEditId}`, {
             method: "PUT",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`, // Include token in headers
             },
             body: JSON.stringify(announcementData),
           });
 
-          if (!response.ok){
+          if (!response.ok) {
             alert("Failed to update announcement");
           } else {
-            alert("Announcement updated successfully")
-          };
+            alert("Announcement updated successfully");
+          }
         } else {
           // ADD MODE: Create new announcement via API
           const response = await fetch(API_URL, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`, // Include token in headers
             },
             body: JSON.stringify(announcementData),
           });
 
-          if (!response.ok){
+          if (!response.ok) {
             alert("Failed to create announcement");
           } else {
-            alert("Announcement created successfully")
-          };
+            alert("Announcement created successfully");
+          }
         }
 
-        // Reset form and state
         titleInput.value = "";
         contentInput.value = "";
         prioritySelect.value = "medium";
@@ -152,7 +154,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         formHeader.textContent = "➕ Add New Announcement";
         submitBtn.textContent = "+ Add";
 
-        // Fetch updated data and re-render
         await fetchAnnouncements();
       } catch (error) {
         console.error("Error submitting announcement:", error);
@@ -161,24 +162,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // ==============================================================
-  // ANNOUNCEMENT LIST CONTAINER
-  // ---------------------------------------------------------------
-  // All announcement cards will be dynamically rendered inside this container.
-  // ==============================================================
   const container = document.getElementById("announcement-list");
 
-  // ==============================================================
-  // FETCH ANNOUNCEMENTS FROM API
-  // ---------------------------------------------------------------
-  // Retrieves all announcements from the database
-  // ==============================================================
   async function fetchAnnouncements() {
     try {
+      const token = sessionStorage.getItem("token"); // Retrieve token from session storage
       const response = await fetch(API_URL, {
         headers: {
-          "X-Admin": "true" // Indicate admin access to fetch all announcements
-        }
+          "Authorization": `Bearer ${token}`, // Include token in headers
+          "X-Admin": "true",
+        },
       });
       if (!response.ok) throw new Error("Failed to fetch announcements");
       announcementsData = await response.json();
@@ -189,18 +182,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // ==============================================================
-  // RENDER FUNCTION
-  // ---------------------------------------------------------------
-  // Clears and re-renders the announcement list from database data.
-  // Sorts announcements by date (newest first), then by priority.
-  // ==============================================================
   function renderAnnouncements() {
     container.innerHTML = "";
 
     const announcements = announcementsData;
+    const token = sessionStorage.getItem("token");
 
-    // Sort by date, then by priority
     const sortedAnnouncements = announcements.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
@@ -211,17 +198,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       return priorityOrder[b.priority] - priorityOrder[a.priority];
     });
 
-    // Generate a card for each announcement
     sortedAnnouncements.forEach((item) => {
       const card = document.createElement("div");
       card.className = "announcement-card";
 
-      // Add 'hidden' class for visually hidden announcements
       if (item.is_hidden) {
         card.classList.add("hidden");
       }
 
-      // Card HTML structure
       card.innerHTML = `
         <h4>${item.title}</h4>
         <div class="meta">
@@ -232,13 +216,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         <p>${item.description}</p>
         <div class="actions">
-          <button class="btn view">👁 ${
-            item.is_hidden ? "Unhide" : "Hide"
-          }</button>
+          <button class="btn view">👁 ${item.is_hidden ? "Unhide" : "Hide"}</button>
           <button class="btn edit">✏️ Edit</button>
           <button class="btn delete">🗑 Delete</button>
         </div>
       `;
+
 
       // Toggle hide
       card.querySelector(".btn.view").addEventListener("click", async () => {
@@ -250,6 +233,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`, // Include token in headers
+
             },
             body: JSON.stringify(updatedData),
           });
@@ -269,7 +254,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           try {
             const response = await fetch(`${API_URL}/${item._id}`, {
               method: "DELETE",
-            });
+              headers: {
+                "Authorization": `Bearer ${token}`, // Include token in headers
+            }
+          });
 
             if (!response.ok) throw new Error("Failed to delete announcement");
 

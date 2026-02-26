@@ -1,10 +1,13 @@
 import { MongoClient, ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const uri = "mongodb+srv://dev-user1:NsDXtHtpEsAGNUcd@kabarangay-system-db.qkeqxvv.mongodb.net/?appName=Kabarangay-system-db";
 
 const client = new MongoClient(uri);
-const DB_NAME = "Kabarangay-system-db";
-const COLLECTION_NAME = "announcements";
+const DB_NAME = process.env.DB_NAME;
+const COLLECTION_NAME = process.env.ANNOUNCEMENT_COLLECTION;
 
 // CREATE - Insert a new announcement
 export async function createAnnouncement(announcementData) {
