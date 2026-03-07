@@ -57,26 +57,25 @@
 .staff-login-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background-color: #0073e6;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 15px;
+  gap: 6px;
+  background-color: transparent;
+  color: #2f6fed;
+  border: 1px solid #2f6fed;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 115, 230, 0.3);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .staff-login-btn:hover {
-  background-color: #005bb5;
-  transform: translateY(-2px);
+  background-color: #2f6fed;
+  color: #fff;
 }
 
 .staff-login-btn i {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Modal Styles */

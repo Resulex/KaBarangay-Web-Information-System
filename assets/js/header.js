@@ -75,6 +75,11 @@ export const initHeader = async () => {
     const closeModal = document.getElementById("closeModal");
 
     if (staffLoginBtn && loginModal && closeModal) {
+      // Check if the current URL path starts with '/admin-login'
+      const currentPath = window.location.pathname;
+      if (!currentPath.includes('/admin-login')) {
+        staffLoginBtn.style.visibility = 'hidden'; // Hide the staff login button if not on admin login page
+      }
       loginModal.setAttribute("aria-hidden", "true");
 
       staffLoginBtn.addEventListener("click", () => {

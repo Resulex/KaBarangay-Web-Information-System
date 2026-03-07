@@ -1,16 +1,16 @@
 import express from 'express';
 import * as crud from './crud.js';
-import { authenticateToken } from '../middleware/authenticate.js';
+import { loginAdminValidation } from '../validation/adminValidation.js';
 
 const router = express.Router();
 
 // Login admin
-router.post('/', async (req, res) => {
+router.post('/', loginAdminValidation, async (req, res, next) => {
   try {
     const data = await crud.loginAdmin(req.body.username, req.body.password);
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 

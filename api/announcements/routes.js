@@ -3,13 +3,14 @@ import * as crud from './crud.js';
 import { authenticateToken } from '../middleware/authenticate.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { createAnnouncementValidation, updateAnnouncementValidation, toggleHiddenValidation } from '../validation/announcementValidation.js';
 
 dotenv.config();
 
 const router = express.Router();
 
 // GET All
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     console.log("Received request for announcements with headers:", req.headers);
     console.log("Authenticated user:", req.user, !!req.user); // Log authenticated user info (if any)
@@ -32,37 +33,40 @@ router.get('/', async (req, res) => {
     const data = await crud.getAllAnnouncements(filter);
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 
 // POST New
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/', authenticateToken, 
+  createAnnouncementValidation, async (req, res, next) => {
   try {
     const result = await crud.createAnnouncement(req.body);
     res.status(201).json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 
 // PUT Update
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id', authenticateToken,
+  updateAnnouncementValidation, async (req, res, next) => {
   try {
     const result = await crud.updateAnnouncement(req.params.id, req.body);
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 
 // PATCH hidden
-router.patch('/:id/toggle-hidden', authenticateToken, async (req, res) => {
+router.patch('/:id/toggle-hidden', authenticateToken,
+  toggleHiddenValidation, async (req, res, next) => {
   try {
     const result = await crud.toggleHidden(req.params.id, req.body);
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 
@@ -72,7 +76,7 @@ router.delete('/:id', async (req, res) => {
     const result = await crud.deleteAnnouncement(req.params.id);
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // Pass to centralized error handler
   }
 });
 

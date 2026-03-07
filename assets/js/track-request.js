@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       // --- Fetch document requests data from API ---
-      const response = await fetch(`http://localhost:3000/api/document-requests/${query}`);
+      const response = await fetch(`http://localhost:3000/api/document-requests/${query}`, 
+        {cache: 'no-store'});
       const data = await response.json();
       renderDetails(data);
       detailsSection.hidden = false;

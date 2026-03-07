@@ -33,9 +33,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderDirectory() {
     const tbody = document.querySelector(".directory-table tbody");
+    tbody.innerHTML = "";  
 
     officials.forEach((official) => {
       const row = document.createElement("tr");
+
+
+      // photo cell
+      const photoCell = document.createElement("td");
+      const img = document.createElement("img");
+      img.src = official.image_url || "/assets/img/placeholder-avatar.png";
+      img.alt = official.name + " photo";
+      img.className = "directory-photo";
+      photoCell.appendChild(img);
+      
 
       // Create and append each cell
       const nameCell = document.createElement("td");
@@ -51,6 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       emailCell.textContent = official.email;
 
       // Append cells to the row
+      row.appendChild(photoCell);
       row.appendChild(nameCell);
       row.appendChild(positionCell);
       row.appendChild(contactCell);

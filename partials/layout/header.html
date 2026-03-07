@@ -113,14 +113,14 @@
         Styled using Bootstrap’s btn and btn-primary classes.
       =========================== -->
       <button
-        class="staff-login-btn btn btn-primary d-flex"
+        class="staff-login-btn btn btn-primary"
         id="staffLoginBtn"
         aria-label="Open staff login modal"
         aria-haspopup="dialog"
         aria-controls="loginModal"
       >
         <i class="fas fa-user-lock" aria-hidden="true"></i>
-        <span>Staff Login</span>
+        <span>Staff Portal</span>
       </button>
     </div>
   </div>
@@ -208,6 +208,10 @@
       <small class="text-muted">or</small>
     </div>
 
+    <div id="error-message" class="alert alert-danger" style="display: none; margin-bottom: 15px; font-size: 0.9rem;">
+      <!-- Error text will appear here -->
+    </div>
+
     <!-- Google OAuth Login Button -->
     <a
       href="http://localhost:3000/auth/login"
@@ -215,11 +219,7 @@
       style="background-color: #4285F4; color: white; border: none; padding: 0.5rem 1rem;"
       aria-label="Login with Google"
     >
-      <img
-        src="https://www.gstatic.com/favicon.ico"
-        alt="Google icon"
-        style="width: 18px; height: 18px; margin-right: 8px;"
-      />
+      <i class="fab fa-google" style="font-size: 18px; margin-right: 12px;"></i>
       <span>Continue with Google</span>
     </a>
     </div>
