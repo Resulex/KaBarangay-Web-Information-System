@@ -1,8 +1,19 @@
 export const protectPage = () => {
+  // For google auth, check for token in URL first
+  const urlParams = new URLSearchParams(window.location.search);
+  const tokenFromUrl = urlParams.get('token');
+
+  if (tokenFromUrl) {
+    sessionStorage.setItem('token', tokenFromUrl);
+    // Clean the URL to remove the token query parameter for security and aesthetics
+    urlParams.delete('token');
+    const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}${window.location.hash}`;
+    window.history.replaceState({}, document.title, newUrl);
+  }
   // checkSessionTimeout();
   if (!sessionStorage.getItem("token")) {
     alert("Access denied! Please log in first.");
-    window.location.href = "index.html";
+    window.location.href = "admin-login.html";
     return false; // Stop further execution
   }
 
@@ -18,9 +29,9 @@ export const initLogout = () => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
-        sessionStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("token");
         alert("You have been logged out.");
-        window.location.href = "index.html";
+        window.location.href = "admin-login.html";
       });
     }
   };

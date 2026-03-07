@@ -60,16 +60,13 @@ export const initLoginModal = () => {
         body: JSON.stringify({ username, password }),
       })
         .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
           return response.json();
         })
         .then((data) => {
           console.log(data);
           if (data.success) {
             // SUCCESS: Save token in session
-            
+            // debugger;
             sessionStorage.setItem("token", data.token); // Store token in session storage
             window.location.href = "admin-dashboard.html"; // Redirect to dashboard
           } else {
@@ -83,10 +80,29 @@ export const initLoginModal = () => {
         })
         .catch((error) => {
           console.error("Error during login fetch:", error);
-          alert("An error occurred during login. Please try again later.");
+          alert(error.message);
         });
     });
   }
 
   console.log("Login modal initialized successfully.");
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    const email = urlParams.get('email');
+    const errorDiv = document.getElementById('error-message');
+
+    if (error === 'unauthorized_admin') {
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = `
+            <strong>Access Denied:</strong> <br>
+            The account <b>${email}</b> is not registered as a Barangay Admin. 
+            Please contact the system administrator.
+        `;
+        
+        // Clean URL without reloading page
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});

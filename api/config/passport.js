@@ -10,12 +10,17 @@ passport.use(new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
   (accessToken, refreshToken, profile, done) => {
+    console.log("Google Profile received:", profile.id);
+
+    // Safely extract email
+    const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+    
+
     // Store user profile in database or session
     const user = {
       id: profile.id,
-      displayName: profile.displayName,
-      email: profile.emails[0].value,
-      photo: profile.photos[0]?.value
+      email: email,
+      displayName: profile.displayName
     };
     return done(null, user);
   }

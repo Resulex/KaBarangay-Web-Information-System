@@ -10,11 +10,30 @@
     id="add-official-form"
     role="form"
     aria-describedby="official-form-instructions"
+    enctype="multipart/form-data"
   >
     <p id="official-form-instructions" class="sr-only">
       Fill out the official's personal information, position, and
       responsibilities. All fields are required.
     </p>
+
+    <!-- Profile Image Upload -->
+    <div class="form-group">
+      <label for="official_image">Profile Image <span aria-hidden="true">*</span></label>
+      <div class="image-preview-container mb-3">
+        <img id="imagePreview" src="" alt="Preview" style="display:none; max-width:150px; border-radius:8px;" />
+      </div>
+      <input
+        type="file"
+        id="official_image"
+        name="image"
+        accept="image/jpeg,image/png,image/webp"
+        aria-required="true"
+        aria-label="Profile image of barangay official"
+      />
+      <small class="form-text text-muted">Accepted: JPEG, PNG, WebP (Max 5MB)</small>
+    </div>
+
 
     <div class="form-group">
       <label for="full_name">Full Name <span aria-hidden="true">*</span></label>

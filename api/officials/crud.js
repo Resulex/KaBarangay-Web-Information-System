@@ -22,12 +22,18 @@ export async function createOfficial(officialData) {
       email: officialData.email,
       location: officialData.location,
       key_responsibility: officialData.key_responsibility,
+      image_url: officialData.image_url,
       is_deleted: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
 
     const result = await collection.insertOne(official);
     console.log("Official created with ID:", result.insertedId);
-    return result;
+
+    // Return the full object including the new MongoDB _id 
+    // so the frontend can render the image and handle future updates
+    return { _id: result.insertedId, ...official };
   } catch (err) {
     console.error("Error creating official:", err);
     throw err;
@@ -43,6 +49,8 @@ export async function getAllOfficials(filter = {}) {
   try {
     const officials = await collection.find({ ...filter }).toArray();
     console.log(`Retrieved ${officials.length} officials`);
+
+
     return officials;
   } catch (err) {
     console.error("Error retrieving officials:", err);

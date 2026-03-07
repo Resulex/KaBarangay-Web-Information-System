@@ -24,3 +24,18 @@
 .directory-table tr:last-child td {
   border-bottom: none;
 }
+
+.directory-table td,
+.directory-table th {
+  vertical-align: middle;
+}
+
+.directory-photo {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0; /* Adds the light gray border */
+  display: block;
+  margin: 0 auto; /* Centers the image if it's in a block container */
+}
