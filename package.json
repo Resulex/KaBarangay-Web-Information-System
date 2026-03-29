@@ -23,7 +23,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:api": "npx nodemon api/server.js"
+    "start:api": "npx nodemon api/server.js",
+    "start": "node server.js",
+    "build": "react-scripts build"
   },
   "repository": {
     "type": "git",
