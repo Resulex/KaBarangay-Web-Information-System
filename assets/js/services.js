@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       timeline: timeline || [],
     };
 
-    fetch('http://localhost:3000/api/document-requests', {
+    fetch('https://kabarangay-web-information-system-backend.onrender.com/api/document-requests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

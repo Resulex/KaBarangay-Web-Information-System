@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let requestData = null;
 
   // Fetch data from api
-  fetch(`http://localhost:3000/api/document-requests`)
+  fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/document-requests`)
     .then((response) => response.json())
     .then((data) => {
       requestData = data;
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         progressBar.textContent = progress.label;
 
         // Log changes (in real app, would send update to backend)
-        fetch(`http://localhost:3000/api/document-requests/${doc._id}/status`, {
+        fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/document-requests/${doc._id}/status`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'

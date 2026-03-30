@@ -52,7 +52,7 @@ export const initLoginModal = () => {
 
       // --- Authentication Logic through API ---
       // POST login API call
-      fetch(`http://localhost:3000/api/admins/`, {
+      fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/admins/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await initLoginModal();
   let officials = [];
-  fetch("http://localhost:3000/api/officials?is_deleted=false")
+  fetch("https://kabarangay-web-information-system-backend.onrender.com/api/officials?is_deleted=false")
   .then((response) => {
     if (!response.ok) {
       throw new Error("Failed to fetch officials");
