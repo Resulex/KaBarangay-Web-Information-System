@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(officialsData);
     // await getOfficials();
 
-    fetch(`http://localhost:3000/api/officials?is_deleted=false`,
+    fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/officials?is_deleted=false`,
       {cache: 'no-store'}
     )
       .then((response) => response.json())
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (confirm(`Delete ${official.name}?`)) {
             // Remove from API
             const token = sessionStorage.getItem("token");
-            fetch(`http://localhost:3000/api/officials/${official._id}`, {
+            fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/officials/${official._id}`, {
               method: "DELETE",
               headers: {
                 "Authorization": `Bearer ${token}`
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (editingIndex !== null) {
         // Update
-        fetch(`http://localhost:3000/api/officials/${officialsData[editingIndex]._id}`, {
+        fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/officials/${officialsData[editingIndex]._id}`, {
           method: "PUT",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       } else {
         // Add new
-        fetch(`http://localhost:3000/api/officials`, {
+        fetch(`https://kabarangay-web-information-system-backend.onrender.com/api/officials`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`

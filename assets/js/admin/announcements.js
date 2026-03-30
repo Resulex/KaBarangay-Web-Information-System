@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ==============================================================
   // API CONFIGURATION
   // ---------------------------------------------------------------
-  const API_URL = "http://localhost:3000/api/announcements";
+  const API_URL = "https://kabarangay-web-information-system-backend.onrender.com/api/announcements";
   // ---------------------------------------------------------------
   // Prevents unauthorized users from accessing this admin page.
   // If protectPage() returns false, stop further script execution.

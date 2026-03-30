@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   async function fetchAnnouncements() {
     try {
-      const response = await fetch('http://localhost:3000/api/announcements');
+      const response = await fetch('https://kabarangay-web-information-system-backend.onrender.com/api/announcements');
       announcementList = await response.json();
       renderAnnouncements();
     } catch (error) {
